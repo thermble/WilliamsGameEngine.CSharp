@@ -9,7 +9,6 @@ See Game Engine Tutorial.pdf for a full step-by-step tutorial.
 
 ### Important Notes
 
-1. Toward the end of the tutorial, there is a call to a function that no longer exists.  So in place of `setColor` use `setFillColor`.
 1. There are some typos in the tutorial.  They are good because they make you think.  They make you look at the code instead of just typing away.  So actually read the code and the surrounding text.  You may learn something.  (Probably lots of somethings.)
 1. As the tutorial goes along, the author does not give you all the code.  He expects that you learned the techniques before, so you should be able to do so again.  Or in some cases, he tells you in the text rather than in the code segments he gives you.
 1. Creating a scrolling background is not part of the tutorial.  I always think that it is because the background picture is in the art.  There is a special section below to give you a start.
@@ -56,15 +55,7 @@ When you get to the end of the tutorial, there is one more step.  That step is n
 
 ## Updates to the Tutorial
 
-No modifications to the VS Project are needed after forking and cloning this repository to your computer.
-
-You can skip any mention of SFMLProjectModification.docx, and no changes are needed to any compiler or linker options.
-
-You can ignore the references to the H:\ drive.
-
-You do not need to move the art as instructed.  They are in the Resources folder already.
-
-There is a link to a sprite sheet making website.  That website was no longer running as a sprite sheet maker.  If you decide to make sprites for your own game, you can look up piskel or click on this link [piskel](https://www.piskelapp.com), which was running at the time of this writing.
+I updated the tutorial from the original version which was written for C++.  So you may find remnants of C++ in it.  But those remnants should be minor.
 
 ## Credits
 
