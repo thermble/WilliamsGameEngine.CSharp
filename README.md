@@ -1,8 +1,8 @@
 # Game Engine Tutorial
 *Mr. Miyoshi’s Beginning Programming / Game Programming Class*
 
-This tutorial will walk you through the process of creating your own game, starting with a barebones project and building up to a 
-complete game with user input, game objects, collisions, and more. Along the way we’ll explore each piece of the game in-depth. 
+This tutorial will walk you through the process of creating your own game, starting with a barebones project and building up to a complete game with user input, game objects, collisions, and more. Along the way we’ll explore each piece of the game in-depth. 
+
 After working through this tutorial you’ll be able to use the skills you’ve learned to make any kind of game you’d like.
 
 See Game Engine Tutorial.pdf for a full step-by-step tutorial.
@@ -10,7 +10,7 @@ See Game Engine Tutorial.pdf for a full step-by-step tutorial.
 ### Important Notes
 
 1. There are some typos in the tutorial.  They are good because they make you think.  They make you look at the code instead of just typing away.  So actually read the code and the surrounding text.  You may learn something.  (Probably lots of somethings.)
-1. As the tutorial goes along, the author does not give you all the code.  He expects that you learned the techniques before, so you should be able to do so again.  Or in some cases, he tells you in the text rather than in the code segments he gives you.
+1. As the tutorial goes along, the author does not give you all the code (or maybe he will).  He expects that you learned the techniques before, so you should be able to do so again.  Or in some cases, he tells you in the text rather than in the code segments he gives you.
 1. Creating a scrolling background is not part of the tutorial.  I always think that it is because the background picture is in the art.  There is a special section below to give you a start.
 1. There are no deletions in the tutorial.  In other words, you do not need to delete any code that he has written.  There are places where he writes "omitted code" which are just placeholders for code you have already written before.  There are also a couple places where new code may not be in color.
 
@@ -25,7 +25,7 @@ When you get to the end of the tutorial, there is one more step.  That step is n
 1) Make sure you are logged into your GitHub account.  Fork this repo by clicking on the Fork button in the top right corner of this web page.  This will make an exact copy of this repository in your own GitHub account.  (Note: This step does not pull the repository down to your local computer.)
 1) Launch VS2022.
 1) Click “Clone a repository”
-1) Paste in `https://github.com/[Your GitHub username]/WilliamsGameEngine.Net.git` and click Clone.  (You can get the link by going to your forked repository on your GitHub account, and pressing the copy link button.)
+1) Paste in `https://github.com/[Your GitHub username]/WilliamsGameEngine.CSharp.git` and click Clone.  (You can get the link by going to your forked repository on your GitHub account, and pressing the copy link button.)
 1) After it finishes cloning you should see MyGame in the Solution Explorer. If not, open Solution Explorer with View -> Solution Explorer
 1) Click the arrow next to MyGame to see the source files, like GameScene.cs.
 1) The tool bar should contain a green play button with “Debug, Any CPU”.
@@ -33,7 +33,7 @@ When you get to the end of the tutorial, there is one more step.  That step is n
 
 ### Option #2 (only use this option if you are NOT using GitHub): download a .zip file
 
-1) Go to [https://github.com/MichaelTMiyoshi/WilliamsGameEngine.Net](https://github.com/MichaelTMiyoshi/WilliamsGameEngine.Net)
+1) Go to [https://github.com/MichaelTMiyoshi/WilliamsGameEngine.CSharp](https://github.com/MichaelTMiyoshi/WilliamsGameEngine.CSharp)
 1) Click on the green “Clone or Download”
 1) Click on “Download Zip” to download a copy of the repository
 1) Unzip the files to wherever you’d like.
@@ -48,7 +48,7 @@ When you get to the end of the tutorial, there is one more step.  That step is n
 3) Open a Terminal window and execute `sudo port install csfml`. Answer `yes` or `y` when prompted to complete the installation.
 4) Launch Visual Studio 2022 for Mac
 5) Ignore the initial screen and select `File -> Clone Repository...`
-6) Paste in `https://github.com/[Your GitHub username]/WilliamsGameEngine.Net.git` and click Clone.  (You can get the link by going to your forked repository on your GitHub account, and pressing the copy link button.)
+6) Paste in `https://github.com/[Your GitHub username]/WilliamsGameEngine.CSharp.git` and click Clone.  (You can get the link by going to your forked repository on your GitHub account, and pressing the copy link button.)
 7) Click the arrow next to MyGame to see the source files, like GameScene.cs.
 8) The tool bar should contain a white play button with “Debug, Default”.
 9) Press play and see it compile and run, showing a blank window ready for the tutorial to start.
