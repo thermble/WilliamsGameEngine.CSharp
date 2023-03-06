@@ -20,7 +20,7 @@ When you get to the end of the tutorial, there is one more step.  That step is n
 
 ## Setup in VS2022 on Windows
 
-### Option #1: clone from GitHub with VS2022
+### Option #1: fork from GitHub with VS2022
 
 1) Make sure you are logged into your GitHub account.  Fork this repo by clicking on the Fork button in the top right corner of this web page.  This will make an exact copy of this repository in your own GitHub account.  (Note: This step does not pull the repository down to your local computer.)
 1) Launch VS2022.
