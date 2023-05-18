@@ -9,7 +9,7 @@ namespace MyGame
 {
     class Explosion : AnimatedSprite
     {
-        private readonly Sound _boom = new Sound();
+        private readonly Sound _boom = new Sound(); //replace with dust fx etc
         public Explosion(Vector2f pos):base(pos)
         {
             Texture = Game.GetTexture("Resources/explosion-spritesheet.png");

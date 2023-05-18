@@ -79,7 +79,7 @@ namespace GameEngine
             for (int i = 0; i < _gameObjects.Count; i++) _gameObjects[i].Update(time);
         }
 
-        // This function calls draw on each of our game objects.
+        // This function calls draw on each of our game objects
         private void DrawGameObjects()
         {
             foreach (var gameObject in _gameObjects) gameObject.Draw();

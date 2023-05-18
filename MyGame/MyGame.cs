@@ -4,10 +4,10 @@ namespace MyGame
 {
     static class MyGame
     {
-        private const int WindowWidth = 800;
-        private const int WindowHeight = 600;
+        private const int WindowWidth = 1920;
+        private const int WindowHeight = 1080;
 
-        private const string WindowTitle = "shiptest that im going to turn into a platformer later";
+        private const string WindowTitle = "almost platformer";
 
         private static void Main(string[] args)
         {

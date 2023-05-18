@@ -8,7 +8,7 @@ namespace MyGame
     class MeteorSpawner : GameObject
     {
         //#ms between meteor spawn.
-        private const int SpawnDelay = 270;
+        private const int SpawnDelay = 999999999;
         private int _timer;
         public override void Update(Time elapsed)
         {
