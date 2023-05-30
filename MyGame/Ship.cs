@@ -10,6 +10,9 @@ using System.Reflection.Metadata;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using static GameEngine.AnimatedSprite;
+using SFML.Audio;
+using System.Security.Cryptography;
+
 /*make side to side movement on ground greater than aerial side to side movement
 Make character do a sliding turn change if you hold a direction and are currently "sliding" (holding A, moving positive X still)
 make character have stages to falling (if gravaccel is greater than blabla then rising, if >___ && <___ then arc of jump, if gravaccel big negative then falling)
@@ -52,14 +55,18 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
         const float gravcap = 0.8f;
         int floorcheck = 0;
         float floorpos = 0f;
+        float wallpos = 0f;
         bool kicking = false;
         float timer = 1.5f; //speed of animations. can make separate timers for faster or slower anims.
         int buttonstate = 0; //0 is left, 1 is right
+        bool regret = false;
+        Random rng = new Random();
+        
                                           //         runloop generates 7,8,9,10 from the 0,1,2,3 that the Modulus generates.
         List<int> RUNLOOP = new List<int> { 7, 8, 9, 10 }; //refers to list with scrongle[RUNLOOP[ANMCOUNTER%(framecount)]]
         List<int> FALLLOOP = new List<int> { 0, 1, 2 };  //IF ANYTHING NEEDS ANIMATING WITH OR WITHOUT SPEED FACTORED, USE ABOVE METHOD.
         int ANMCOUNTER = 0;
-
+        
 
         //add timer resetter at bottom
         //------------------------------------------------------------------------------
@@ -103,18 +110,20 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             {
 
                 
-                Vector2f flcv = _sprite.Position;
                 Floor f = (Floor)otherGameObject;
                 FloatRect flc = f.GetCollisionRect();
                 tfl=true;
                 floorpos=flc.Top;   //implement a check when you're too far below the floor to properly clip.
+                //How does the game know what side you touch?
             }
-            else if (otherGameObject.HasTag("wall"))
+            if (otherGameObject.HasTag("wall"))
             {
+                
+                Wall w = (Wall)otherGameObject;
+                FloatRect wc = w.GetCollisionRect();
                 twl=true;
-                //etc
+                wallpos=wc.Left;
             }
-            Console.WriteLine(otherGameObject);
         }
         public void SpeedBasedUpd()
         {
@@ -141,12 +150,10 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
 
         public override void Update(Time elapsed)
         {
-            Console.WriteLine(xspeed);
             timer-=(Math.Abs(xspeed));
-            
-            
-            
-            Console.WriteLine(timer);
+            FloatRect bounds = _sprite.GetGlobalBounds();
+
+
             var scrongle = new IntRect[] // List<IntRect>
             {
                 new IntRect(  0, 0, 48, 61), //jump1  0
@@ -166,12 +173,12 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 new IntRect(0,183,48,61),//bounce 12
                 new IntRect(48,183,48,61), //whoops! 13 //MAKE TURNING/SLOWING
                 new IntRect(96,183,48,61),//crouch
+                new IntRect(144,183,48,61)//turning
 
             }; //🤮  get this out of update when possible
             Vector2f pos = _sprite.Position;
             float x = pos.X;
             float y = pos.Y;
-            Console.WriteLine(pos.Y + " "+pos.X);
             if (pos.X<0||pos.X>1920||pos.Y<0||pos.Y>1080)
             {
                 GameScene scene = (GameScene)Game.CurrentScene;
@@ -183,6 +190,11 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             //Oh boy! here comes the overload of sprite stuff! I am going to gravely regret putting this stuff here later. :)
 
 //////////////////////////////////////////////////
+            if (twl)
+            {
+                xspeed=0;
+                x=wallpos-24;
+            }
             if (tfl) { yspeed=0;
                 _sprite.TextureRect=scrongle[4];
                 y=floorpos+1;//just enough height to still be touching. may cause issues later. Ceilings will cause issues if are too tall spritewise
@@ -219,14 +231,22 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 y+=yspeed*msElapsed;
                 driftcheck = msElapsed;
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.A)) { buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; } } x+=xspeed*msElapsed; } else
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A)) { twl=false; buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6];int min = 2, max=5; int random =min+ rng.Next(max-min);List<float> ranfloat = new List<float> {/*some floats here*/ }; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-3.0f), new Vector2f(6.0f, 6.0f), random, buttonstate, -xspeed, 0.0f, 0.0f, -0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10; int random = min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, 0.25f, 0.22f, 0.0f, -0.01f,-0.02f,165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
             {
                 if (xspeed<restspeed&&tfl) { xspeed+=grndacc; }
                 x+=xspeed*msElapsed;
                 driftcheck = msElapsed;
+                
           //if moving right and pressing left, sliding. if slowly or barely moving left, dashing. if normal speed, running.
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.D)) { buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; } } x+=xspeed*msElapsed; } else
+            if (Keyboard.IsKeyPressed(Keyboard.Key.LShift))
+            {
+                if (tfl)
+                {
+
+                }
+            }
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D)&&!twl) { buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]];int min = 7, max = 10;int random =min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-96.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, -0.25f, 0.22f, 0.0f, 0.01f, -0.02f, 165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
             {
                 if (xspeed>restspeed&&tfl){ xspeed-=grndacc; }  //if not touching floor, no deceleration for you :)
                 x+=xspeed*msElapsed;
@@ -256,7 +276,6 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             //if (!tfl) {if (yspeed<gravcap) { yspeed+=gravaccel; }else { yspeed=gravcap; }}            
             
             if (tfl) { yspeed=0; }
-            Console.WriteLine(ANMCOUNTER);
             
             
 
@@ -265,21 +284,22 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space)&& _fireTimer<=0)
             {
                 _fireTimer=FireDelay;
-                FloatRect bounds = _sprite.GetGlobalBounds();
-                float laserX = x+bounds.Width;
-                float laserY = y+bounds.Height/2.0f;
-                Explosion explosion=new Explosion(new Vector2f(laserX, laserY));
+                float particleX = x+bounds.Width-48.0f;
+                float particleY = y+bounds.Height/4.0f;
+                Sillything sillything = new Sillything(new Vector2f(particleX, particleY), new Vector2f(3.0f, 3.0f), 7, buttonstate, xspeed, yspeed, 0.0f, 0.0f, -0.02f,100);
                 float laserX2 = x+bounds.Width;
                 float laserY2 = y+bounds.Height/1.3f;
                 Laser laser2 = new Laser(new Vector2f(laserX2, laserY2));
                 float laserX3 = x+bounds.Width;
                 float laserY3 = y+bounds.Height/4.0f;
                 Laser laser3 = new Laser(new Vector2f(laserX3, laserY3));
-                Game.CurrentScene.AddGameObject(explosion);
+                Game.CurrentScene.AddGameObject(sillything);
                 Game.CurrentScene.AddGameObject(laser2);
                 Game.CurrentScene.AddGameObject(laser3);
             }
             tfl=false;
+            twl=false;
+            tcl=false;
             SpeedBasedUpd();
             if (timer<=0)
             {

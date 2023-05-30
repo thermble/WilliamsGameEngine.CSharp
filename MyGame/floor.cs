@@ -60,7 +60,6 @@ namespace MyGame
         public Floor(Vector2f pos, Vector2f scale)
         {
             _sprite.Texture = Game.GetTexture("Resources/floor.png");
-            _sprite.Scale=new Vector2f(1.0f, 1.0f);
             _sprite.Position = pos;
             _sprite.Scale=scale;
             AssignTag("floor");

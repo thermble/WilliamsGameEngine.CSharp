@@ -11,11 +11,18 @@ namespace MyGame
         {
             Ship ship = new Ship(new Vector2f(100.0f,100.0f));
             AddGameObject(ship);
-            Floor floor = new Floor(new Vector2f(100.0f, 300.0f), new Vector2f(3.0f, 1.5f));
+            Floor floor = new Floor(new Vector2f(100.0f, 300.0f), new Vector2f(20.0f, 1.5f));
             AddGameObject(floor);
-            
-            Sillything sillything = new Sillything(new Vector2f(300.0f,400.0f));
-            AddGameObject(sillything);
+            floor = new Floor(new Vector2f(800.0f, 500.0f), new Vector2f(3.0f, 1.0f));
+            AddGameObject(floor);
+            Ceiling ceiling = new Ceiling(new Vector2f(150.0f, 200.0f),new Vector2f(5.0f, 1.0f));
+            AddGameObject(ceiling);
+            Wall wall = new Wall(new Vector2f(300.0f, 100.0f), new Vector2f(1.0f, 4.0f));
+            AddGameObject(wall);
+
+            Box box = new Box(new Vector2f(400.0f, 200.0f), new Vector2f(1.0f, 1.0f));
+            AddGameObject(box);
+
 
 
 
