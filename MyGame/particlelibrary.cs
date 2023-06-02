@@ -76,7 +76,7 @@ namespace MyGame
                 case 13:
                 case 14:
                     _sprite.Origin=new Vector2f(8, 8);
-                    _sprite.Scale=new Vector2f(-1.0f-(Math.Abs(xspeed)), 1.0f+(yspeed*0.75f));
+                  //  _sprite.Scale=new Vector2f(-1.0f-(Math.Abs(xspeed)), 1.0f+(yspeed*0.75f));
 
 
                     //modifiers to xspeed yspeed scaleration.
