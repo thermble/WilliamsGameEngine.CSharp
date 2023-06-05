@@ -69,6 +69,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
         int kickcooldown = 0;
         bool kickping = false;
         bool bounding = false;
+        int boundtimer = 0;
         Random rng = new Random();
         
                                           //         runloop generates 7,8,9,10 from the 0,1,2,3 that the Modulus generates.
@@ -267,6 +268,23 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 kickping=false;
                 buttonstate=0;
                 twl=false;
+                bounding = true;
+                Sillything sillything = new Sillything(new Vector2f(x, y), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1000); //edit later
+                Game.CurrentScene.AddGameObject(sillything);
+
+            }
+            if (bounding)
+            {
+                _sprite.TextureRect=scrongle[12];
+                if (boundtimer>=15)
+                {
+                    boundtimer=0;
+                    bounding=false;
+                }
+                else
+                {
+                    boundtimer++;
+                }
 
 
             }
@@ -292,7 +310,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 y+=yspeed*msElapsed;
                 driftcheck = msElapsed;
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.A)&&!kicking) { twl=false; buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max=5; int random =min+ rng.Next(max-min);int minf = 0, maxf = 10;int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> {0.00f,0.01f,0.02f,0.03f,0.04f,0.05f,0.06f,0.07f,0.08f,0.09f,1.00f}; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, Math.Abs(-xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10; int random = min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, 0.25f, 0.22f, 0.0f, -0.01f,-0.02f,165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A)&&!kicking&&!bounding) { twl=false; buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max=5; int random =min+ rng.Next(max-min);int minf = 0, maxf = 10;int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> {0.00f,0.01f,0.02f,0.03f,0.04f,0.05f,0.06f,0.07f,0.08f,0.09f,1.00f}; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, Math.Abs(-xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10; int random = min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, 0.25f, 0.22f, 0.0f, -0.01f,-0.02f,165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
             {
                 if (xspeed<restspeed&&tfl) { xspeed+=grndacc; }
                 x+=xspeed*msElapsed;
@@ -300,16 +318,40 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 
           //if moving right and pressing left, sliding. if slowly or barely moving left, dashing. if normal speed, running.
             }
+           
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D)&&!twl&&!kicking&&!bounding) { buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max = 5; int random = min+ rng.Next(max-min); int minf = 0, maxf = 10; int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> { 0.00f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 1.00f }; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-72.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, -Math.Abs(xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]];int min = 7, max = 10;int random =min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-96.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, -0.25f, 0.22f, 0.0f, 0.01f, -0.02f, 165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
+            {
+                if (xspeed>restspeed&&tfl){ xspeed-=grndacc; }  //if not touching floor, no deceleration for you :)
+                x+=xspeed*msElapsed;
+                driftcheck=msElapsed;
+                           //if moving left and pressing right, slide. if slowly or barely moving right, dashing. if normal speed, running.
+                                          //may make animation play faster as running speeds up.
+            }
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space)&&kickcooldown<=0) //time for kicking
             {
                 if (!kicking)
                 {
+                    float directionalacc = 0;
+                    switch(buttonstate)
+                    {
+                        case 0:
+                            directionalacc=-1;
+                            break;
+                        case 1:
+                            directionalacc=1;
+                            break;
+
+                    }
+                    Sillything sillything = new Sillything(new Vector2f(x+bounds.Width-(48-(20*directionalacc)), y-32), new Vector2f(1.0f, 2.0f), 10, buttonstate, xspeed*2, -0f, 0.0f, 0.02f*directionalacc, -0.01f, 225);
+                    Game.CurrentScene.AddGameObject(sillything);
+                    Sillything sillything1 = new Sillything(new Vector2f(x+bounds.Width-(48-(20*directionalacc)), y-25), new Vector2f(2.5f, 1.5f), 12, buttonstate, 0.0f, -0f, 0.0f, 0.0f, -0.01f, 50);
+                    Game.CurrentScene.AddGameObject(sillything1);
                     _sprite.TextureRect=scrongle[11];
                     tfl=false;
                     y-=1;
                     yspeed=-0.25f;
                     kicking=true;
-                    switch(buttonstate)
+                    switch (buttonstate)
                     {
                         case 0:
                             xspeed-=0.08f;
@@ -317,20 +359,12 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                         case 1:
                             xspeed+=0.08f;
                             break;
-                            
+
                     }
 
 
                 }
 
-            }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.D)&&!twl&&!kicking) { buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max = 5; int random = min+ rng.Next(max-min); int minf = 0, maxf = 10; int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> { 0.00f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 1.00f }; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-72.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, -Math.Abs(xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]];int min = 7, max = 10;int random =min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-96.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, -0.25f, 0.22f, 0.0f, 0.01f, -0.02f, 165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
-            {
-                if (xspeed>restspeed&&tfl){ xspeed-=grndacc; }  //if not touching floor, no deceleration for you :)
-                x+=xspeed*msElapsed;
-                driftcheck=msElapsed;
-                           //if moving left and pressing right, slide. if slowly or barely moving right, dashing. if normal speed, running.
-                                          //may make animation play faster as running speeds up.
             }
             if (!Keyboard.IsKeyPressed(Keyboard.Key.D)&&!Keyboard.IsKeyPressed(Keyboard.Key.A))//after a certain amount of time has passed, clear both Xspeed and Yspeed
             {

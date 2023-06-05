@@ -48,6 +48,7 @@ namespace MyGame
                 new IntRect(16,48,16,16),//slash3          13
                 new IntRect(32,48,16,16),//slash4          14
                 new IntRect(48,48,16,16),//triangle?       15
+                new IntRect(0, 64, 16, 16) //bound
             };
 
         
@@ -70,13 +71,10 @@ namespace MyGame
                 case 3:
                 case 4:
                 case 5:
-                case 10:
-                case 11:
-                case 12:
-                case 13:
-                case 14:
+                
+
                     _sprite.Origin=new Vector2f(8, 8);
-                  //  _sprite.Scale=new Vector2f(-1.0f-(Math.Abs(xspeed)), 1.0f+(yspeed*0.75f));
+                    //  _sprite.Scale=new Vector2f(-1.0f-(Math.Abs(xspeed)), 1.0f+(yspeed*0.75f));
 
 
                     //modifiers to xspeed yspeed scaleration.
@@ -100,6 +98,38 @@ namespace MyGame
                             break;
                     }
 
+                    break;
+                case 16:
+                    SetOriginMode(OriginMode.MiddleRight);
+                    switch(facingdirection)
+                    {
+                        case 0:
+                            _sprite.Scale=new Vector2f(-scale.X, scale.Y);
+                            break;
+                        case 1:
+                            _sprite.Scale=new Vector2f(scale.X, scale.Y);
+                            break;
+
+                    }
+                    break;
+                case 10:
+                case 11:
+                case 12:
+                case 13:
+                case 14:
+                    _sprite.Origin=new Vector2f(8, 8);
+                    switch (facingdirection)
+                    {
+                        case 0:
+                            _sprite.Scale=new Vector2f(-scale.X, scale.Y);
+
+                            break;
+                        case 1:
+                            _sprite.Scale=new Vector2f(scale.X, scale.Y);
+                            break;
+                    }
+
+                    break;
                     break;
 
 
