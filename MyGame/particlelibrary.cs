@@ -100,7 +100,7 @@ namespace MyGame
 
                     break;
                 case 16:
-                    SetOriginMode(OriginMode.MiddleRight);
+                    _sprite.Origin=new Vector2f(8, 8);
                     switch(facingdirection)
                     {
                         case 0:

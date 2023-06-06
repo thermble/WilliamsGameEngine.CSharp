@@ -269,7 +269,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 buttonstate=0;
                 twl=false;
                 bounding = true;
-                Sillything sillything = new Sillything(new Vector2f(x, y), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 1000); //edit later
+                Sillything sillything = new Sillything(new Vector2f(x+30, y-30), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, -0.1f, -0.025f, 0.03f, 90); //edit later
                 Game.CurrentScene.AddGameObject(sillything);
 
             }
@@ -344,7 +344,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                     }
                     Sillything sillything = new Sillything(new Vector2f(x+bounds.Width-(48-(20*directionalacc)), y-32), new Vector2f(1.0f, 2.0f), 10, buttonstate, xspeed*2, -0f, 0.0f, 0.02f*directionalacc, -0.01f, 225);
                     Game.CurrentScene.AddGameObject(sillything);
-                    Sillything sillything1 = new Sillything(new Vector2f(x+bounds.Width-(48-(20*directionalacc)), y-25), new Vector2f(2.5f, 1.5f), 12, buttonstate, 0.0f, -0f, 0.0f, 0.0f, -0.01f, 50);
+                    Sillything sillything1 = new Sillything(new Vector2f(x+bounds.Width-(48-(20*directionalacc)), y-25), new Vector2f(2.5f, -0.5f), 12, buttonstate, 0.0f, -0f, 0.0f, 0.0f, -0.01f, 50);
                     Game.CurrentScene.AddGameObject(sillything1);
                     _sprite.TextureRect=scrongle[11];
                     tfl=false;
