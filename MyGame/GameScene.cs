@@ -11,30 +11,14 @@ namespace MyGame
         {
             Ship ship = new Ship(new Vector2f(100.0f,100.0f));
             AddGameObject(ship);
-            Floor floor = new Floor(new Vector2f(0.0f, 300.0f), new Vector2f(20.0f, 1.5f));
+            Floor floor = new Floor(new Vector2f(1000.0f, 900.0f), new Vector2f(60.0f, 10.0f),0);
             AddGameObject(floor);
-            floor = new Floor(new Vector2f(1000.0f, 700.0f), new Vector2f(12.0f, 1.0f));
-            AddGameObject(floor);
-            Ceiling ceiling = new Ceiling(new Vector2f(150.0f, 200.0f),new Vector2f(5.0f, 1.0f));
-            AddGameObject(ceiling);
-            Wall wall = new Wall(new Vector2f(1200.0f, 500.0f), new Vector2f(1.0f, 4.0f));
-            AddGameObject(wall);
-            floor=new Floor(new Vector2f(200.0f, 700.0f), new Vector2f(5.0f, 1.0f));
-            AddGameObject(floor);
-            floor = new Floor(new Vector2f(700.0f, 600.0f), new Vector2f(1.0f, 12.0f));
+            floor = new Floor(new Vector2f(1200.0f, 600.0f), new Vector2f(2.0f, 10.0f), 6);
             AddGameObject(floor);
 
-            floor = new Floor(new Vector2f(1700.0f, 400.0f), new Vector2f(15.0f, 15.0f));
-            AddGameObject(floor);
 
-            Box box = new Box(new Vector2f(400.0f, 200.0f), new Vector2f(1.0f, 1.0f));
+            Box box = new Box(new Vector2f(400.0f, 200.0f), new Vector2f(1.0f, 1.0f)); //turn into goalpoint
             AddGameObject(box);
-
-
-
-
-            MeteorSpawner meteorSpawner = new MeteorSpawner();
-            AddGameObject(meteorSpawner);
 
             Score score = new Score(new Vector2f(10.0f, 10.0f));
             AddGameObject(score);

@@ -57,9 +57,25 @@ namespace MyGame
 
         private readonly Sprite _sprite = new Sprite();
         Vector2f scaleshare = new Vector2f(0.0f, 0.0f);
-        public Floor(Vector2f pos, Vector2f scale)
+        private IntRect[] sprts = new IntRect[]  //AAAAAAAAAAAAH
+            {
+                new IntRect(  0, 0, 32, 32), //diamond     0
+                new IntRect( 32, 0, 32, 32),//diagmond     1
+                new IntRect(64, 0, 32, 32),//bigcircl      2
+                new IntRect(0, 32, 32, 32),//circl         3
+
+                new IntRect(32, 32, 32, 32),//smalcirc      4
+                new IntRect(64, 32, 32, 32),//line         5
+                new IntRect(0, 64, 32, 32),//poofcloud    6
+                new IntRect(32, 64, 32, 32),//groundfast   7
+
+                new IntRect(64, 64, 32, 32),//groundfast2   8
+            };
+        public Floor(Vector2f pos, Vector2f scale, int sch)
         {
-            _sprite.Texture = Game.GetTexture("Resources/floor.png");
+            
+            _sprite.Texture= Game.GetTexture("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/floors.png");
+            _sprite.TextureRect=sprts[sch];
             _sprite.Position = pos;
             _sprite.Scale=scale;
              scaleshare = scale;

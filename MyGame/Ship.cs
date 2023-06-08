@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using static GameEngine.AnimatedSprite;
 using SFML.Audio;
 using System.Security.Cryptography;
+using System.Diagnostics;
 
 /*make side to side movement on ground greater than aerial side to side movement
 Make character do a sliding turn change if you hold a direction and are currently "sliding" (holding A, moving positive X still)
@@ -134,7 +135,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 {
                     Console.WriteLine("right wall found teehee");
                     trw=true;
-                    wallpos=ocpos.X+(oob.X*objscmh.X);
+                    wallpos=ocpos.X+(oob.X*objscmh.X)+1;
                     
                 }
                 if (_sprite.Position.X<=ocpos.X-(oob.X*objscmh.X)&&_sprite.Position.Y>(ocpos.Y-(oob.Y*objscmh.Y))+18) //if to the left. mult the int by Xspeed
@@ -154,6 +155,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                     tfl=true;
                     floorpos=flc.Top;
                 }
+
                 //tfl=true;
                   //implement a check when you're too far below the floor to properly clip.
                 //How does the game know what side you touch?
@@ -213,9 +215,9 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 new IntRect(96,122,48,61),//run4      10
                 new IntRect(144,122,48,61),//kick   11
                 new IntRect(0,183,48,61),//bounce 12
-                new IntRect(48,183,48,61), //whoops! 13 //MAKE TURNING/SLOWING
-                new IntRect(96,183,48,61),//crouch
-                new IntRect(144,183,48,61)//turning
+                new IntRect(48,183,48,61), //crouch! 13 //MAKE TURNING/SLOWING
+                new IntRect(96,183,48,61),//wall
+                new IntRect(144,183,48,61)//oops
 
             }; //🤮  get this out of update when possible
             Vector2f pos = _sprite.Position;
@@ -237,12 +239,22 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             {
                 xspeed=0;
                 x=wallpos-24;
-
+if (tfl)
+                {
+                    buttonstate=1;
+                    _sprite.TextureRect=scrongle[14];
+                }
             }
             if (trw)
             {
                 xspeed=0;
                 x=wallpos+24;
+                if (tfl)
+                {
+                    buttonstate=0;
+                    _sprite.TextureRect=scrongle[14];
+
+                }
             }
             if (tfl) { yspeed=0;
                 _sprite.TextureRect=scrongle[4];
@@ -277,7 +289,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 }
             }
             /////////////////////////////////////////////////  
-
+            
             //Add collision to borders. also put animation stuff here?
             if (kicking)
             {
@@ -408,7 +420,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 y+=yspeed*msElapsed;
                 driftcheck = msElapsed;
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.A)&&!kicking&&!bounding) { if (tlw) { x+=3; } buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max=5; int random =min+ rng.Next(max-min);int minf = 0, maxf = 10;int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> {0.00f,0.01f,0.02f,0.03f,0.04f,0.05f,0.06f,0.07f,0.08f,0.09f,1.00f}; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, Math.Abs(-xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10; int random = min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, 0.25f, 0.22f, 0.0f, -0.01f,-0.02f,165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A)&&!kicking&&!bounding) { if (tlw) { x-=0; } buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max=5; int random =min+ rng.Next(max-min);int minf = 0, maxf = 10;int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> {0.00f,0.01f,0.02f,0.03f,0.04f,0.05f,0.06f,0.07f,0.08f,0.09f,1.00f}; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, Math.Abs(-xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10; int random = min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, 0.25f, 0.22f, 0.0f, -0.01f,-0.02f,165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
             {
                 if (xspeed<restspeed&&tfl) { xspeed+=grndacc; }
                 x+=xspeed*msElapsed;
@@ -417,7 +429,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
           //if moving right and pressing left, sliding. if slowly or barely moving left, dashing. if normal speed, running.
             }
            
-            if (Keyboard.IsKeyPressed(Keyboard.Key.D)&&!tlw&&!kicking&&!bounding) { if (trw) {x-=3; } buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max = 5; int random = min+ rng.Next(max-min); int minf = 0, maxf = 10; int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> { 0.00f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 1.00f }; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-72.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, -Math.Abs(xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]];int min = 7, max = 10;int random =min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-96.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, -0.25f, 0.22f, 0.0f, 0.01f, -0.02f, 165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D)&&!tlw&&!kicking&&!bounding) { if (trw) {x+=0; } buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max = 5; int random = min+ rng.Next(max-min); int minf = 0, maxf = 10; int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> { 0.00f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 1.00f }; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-72.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, -Math.Abs(xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]];int min = 7, max = 10;int random =min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-96.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, -0.25f, 0.22f, 0.0f, 0.01f, -0.02f, 165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
             {
                 if (xspeed>restspeed&&tfl){ xspeed-=grndacc; }  //if not touching floor, no deceleration for you :)
                 x+=xspeed*msElapsed;
@@ -487,7 +499,20 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             
             if (tfl) { yspeed=0; }
 
+            if (tfl)
+            {
+                if (trw)
+                {
+                    _sprite.TextureRect=scrongle[14];
+                    buttonstate=0;
 
+                }
+                if (tlw)
+                {
+                    _sprite.TextureRect=scrongle[14];
+                    buttonstate=1;
+                }
+            }
 
             if (_fireTimer>0) { _fireTimer-=msElapsed; }
 
