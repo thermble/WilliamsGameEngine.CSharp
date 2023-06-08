@@ -11,14 +11,21 @@ namespace MyGame
         {
             Ship ship = new Ship(new Vector2f(100.0f,100.0f));
             AddGameObject(ship);
-            Floor floor = new Floor(new Vector2f(100.0f, 300.0f), new Vector2f(20.0f, 1.5f));
+            Floor floor = new Floor(new Vector2f(0.0f, 300.0f), new Vector2f(20.0f, 1.5f));
             AddGameObject(floor);
-            floor = new Floor(new Vector2f(800.0f, 500.0f), new Vector2f(3.0f, 1.0f));
+            floor = new Floor(new Vector2f(1000.0f, 700.0f), new Vector2f(12.0f, 1.0f));
             AddGameObject(floor);
             Ceiling ceiling = new Ceiling(new Vector2f(150.0f, 200.0f),new Vector2f(5.0f, 1.0f));
             AddGameObject(ceiling);
-            Wall wall = new Wall(new Vector2f(700.0f, 100.0f), new Vector2f(1.0f, 4.0f));
+            Wall wall = new Wall(new Vector2f(1200.0f, 500.0f), new Vector2f(1.0f, 4.0f));
             AddGameObject(wall);
+            floor=new Floor(new Vector2f(200.0f, 700.0f), new Vector2f(5.0f, 1.0f));
+            AddGameObject(floor);
+            floor = new Floor(new Vector2f(700.0f, 600.0f), new Vector2f(1.0f, 12.0f));
+            AddGameObject(floor);
+
+            floor = new Floor(new Vector2f(1700.0f, 400.0f), new Vector2f(15.0f, 15.0f));
+            AddGameObject(floor);
 
             Box box = new Box(new Vector2f(400.0f, 200.0f), new Vector2f(1.0f, 1.0f));
             AddGameObject(box);
@@ -49,8 +56,10 @@ namespace MyGame
             --_lives;
             if (_lives<=0)
             {
-                GameOverScene gameOverScene = new GameOverScene(_score);
-                Game.SetScene(gameOverScene);
+                /*GameOverScene gameOverScene = new GameOverScene(_score);
+                Game.SetScene(gameOverScene);*/
+                GameScene scene = new GameScene();
+                Game.SetScene(scene);
             }
         }
     }

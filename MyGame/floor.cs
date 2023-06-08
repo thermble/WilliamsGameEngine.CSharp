@@ -56,14 +56,29 @@ namespace MyGame
     {
 
         private readonly Sprite _sprite = new Sprite();
-
+        Vector2f scaleshare = new Vector2f(0.0f, 0.0f);
         public Floor(Vector2f pos, Vector2f scale)
         {
             _sprite.Texture = Game.GetTexture("Resources/floor.png");
             _sprite.Position = pos;
             _sprite.Scale=scale;
+             scaleshare = scale;
+            _sprite.Origin=new Vector2f(16, 16);
+            
             AssignTag("floor");
             SetCollisionCheckEnabled(true);
+        }
+        public Vector2f GetScaleM()
+        {
+            return _sprite.Scale; //returns multipliers.
+        }
+        public Vector2f GetBaseDim()
+        {
+            return new Vector2f(32, 32);
+        }
+        public Vector2f GetCenter()
+        {
+            return _sprite.Position;
         }
         public override void Draw()
         {

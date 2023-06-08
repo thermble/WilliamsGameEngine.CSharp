@@ -29,9 +29,9 @@ namespace MyGame
                 //spawn meteor along the height of window at random.
                 float meteorY = Game.Random.Next() % size.Y;
 
-                //Create a metooor!!! also adds to scene.
-                Meteor meteor = new Meteor(new Vector2f(meteorX, meteorY));
-                Game.CurrentScene.AddGameObject(meteor);
+                //Create a metooor!!! also adds to scene. NO METEOR!!!
+                /*Meteor meteor = new Meteor(new Vector2f(meteorX, meteorY));
+                Game.CurrentScene.AddGameObject(meteor);*/
             }
         }
     }

@@ -48,7 +48,8 @@ namespace MyGame
                 new IntRect(16,48,16,16),//slash3          13
                 new IntRect(32,48,16,16),//slash4          14
                 new IntRect(48,48,16,16),//triangle?       15
-                new IntRect(0, 64, 16, 16) //bound
+                new IntRect(0, 64, 16, 16), //bound
+                new IntRect(16,64,16,16)
             };
 
         
@@ -100,6 +101,7 @@ namespace MyGame
 
                     break;
                 case 16:
+                case 17:
                     _sprite.Origin=new Vector2f(8, 8);
                     switch(facingdirection)
                     {
