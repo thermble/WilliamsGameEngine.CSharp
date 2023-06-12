@@ -75,6 +75,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
         bool kickpingr = false;
         bool bounding = false;
         int boundtimer = 0;
+        int kicktokens = 3;
         Random rng = new Random();
         
                                           //         runloop generates 7,8,9,10 from the 0,1,2,3 that the Modulus generates.
@@ -109,7 +110,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             };//🤮 i need a more efficient method of getting the spritesheet!!!!!!!
             _sprite.Texture=Game.GetTexture("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/playerspr.png");
             _sprite.TextureRect=scrongle[4];
-            _sprite.Position=new Vector2f(100, 100);
+            _sprite.Position=pos;
             _sprite.Origin =  new Vector2f(24, 61);
             
         }
@@ -152,6 +153,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 if (_sprite.Position.Y<=(ocpos.Y-(oob.Y*objscmh.Y))+16)//multiply the int by yspeed :)
                 {
                     Console.WriteLine("FLOOR TOUCHED!!!");
+                    kicktokens=3;
                     tfl=true;
                     floorpos=flc.Top;
                 }
@@ -242,6 +244,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
 if (tfl)
                 {
                     buttonstate=1;
+                    
                     _sprite.TextureRect=scrongle[14];
                 }
             }
@@ -321,30 +324,32 @@ if (tfl)
             if (kickping) //add a kickping for walls on left!!!
             {
                 Sillything sillything = new Sillything(new Vector2f(x+30, y-30), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, -0.1f, -0.025f, 0.03f, 90); //edit later
-                switch (buttonstate)
+                if (Keyboard.IsKeyPressed(Keyboard.Key.W))
                 {
-                    case 0:
-                        x-=5;
-                        yspeed=-0.65f;
-                        xspeed=-0.05f;
-                        kickping=false;
-                        buttonstate=0;
-                        tlw=false;
-                        bounding = true;
-                        sillything = new Sillything(new Vector2f(x+30, y-35), new Vector2f(2.2f, 0.5f), 17, 1, 0.0f, -0.2f, -0.1f, -0.025f, 0.05f, 90); //edit later
-                        Game.CurrentScene.AddGameObject(sillything);
-                        break;
-                    case 1:
-                        x-=5;
-                        yspeed=-0.45f;
-                        xspeed=-0.2f;
-                        kickping=false;
-                        buttonstate=0;
-                        tlw=false;
-                        bounding = true;
-                        sillything = new Sillything(new Vector2f(x+30, y-30), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, -0.1f, -0.025f, 0.03f, 90); //edit later
-                        Game.CurrentScene.AddGameObject(sillything);
-                        break;
+
+                    x-=5;
+                    yspeed=-0.65f;
+                    xspeed=-0.07f;
+                    kickping=false;
+                    buttonstate=0;
+                    tlw=false;
+                    bounding = true;
+                    sillything = new Sillything(new Vector2f(x+30, y-35), new Vector2f(2.2f, 0.5f), 17, 1, 0.0f, -0.2f, -0.1f, -0.025f, 0.05f, 90); //edit later
+                    Game.CurrentScene.AddGameObject(sillything);
+
+                }
+                else
+                {
+                    x-=5;
+                    yspeed=-0.45f;
+                    xspeed=-0.3f;
+                    kickping=false;
+                    buttonstate=0;
+                    tlw=false;
+                    bounding = true;
+                    sillything = new Sillything(new Vector2f(x+30, y-30), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, -0.1f, -0.025f, 0.03f, 90); //edit later
+                    Game.CurrentScene.AddGameObject(sillything);
+                
 
                 }
 
@@ -354,33 +359,35 @@ if (tfl)
             if (kickpingr)
             {
                 Sillything sillything1 = new Sillything(new Vector2f(x+30, y-30), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, -0.1f, -0.025f, 0.03f, 90); //edit later
-                switch (buttonstate)
+                if (Keyboard.IsKeyPressed(Keyboard.Key.W))
                 {
-                    case 0:
-                        x+=5;
-                        yspeed=-0.45f;
-                        xspeed=0.2f;
-                        kickpingr=false;
-                        buttonstate=1;
-                        trw=false;
-                        bounding = true;
-                        sillything1 = new Sillything(new Vector2f(x-30, y-30), new Vector2f(-2.2f, 0.5f), 16, 1, 0.0f, 0.0f, 0.1f, 0.025f, 0.03f, 90); //edit later
-                        Game.CurrentScene.AddGameObject(sillything1);
-                        break;
-                        
-                    case 1:
-                        x+=5;
-                        yspeed=-0.65f;
-                        xspeed=0.05f;
-                        kickpingr=false;
-                        buttonstate=1;
-                        trw=false;
-                        bounding = true;
-                        sillything1 = new Sillything(new Vector2f(x-30, y-35), new Vector2f(-2.2f, 0.5f), 17, 1, 0.0f, -0.2f, 0.1f, 0.025f, 0.05f, 90); //edit later
-                        Game.CurrentScene.AddGameObject(sillything1);
-                        break;
-                        
+
+                    x+=5;
+                    yspeed=-0.65f;
+                    xspeed=0.07f;
+                    kickpingr=false;
+                    buttonstate=1;
+                    trw=false;
+                    bounding = true;
+                    sillything1 = new Sillything(new Vector2f(x-30, y-35), new Vector2f(-2.2f, 0.5f), 17, 1, 0.0f, -0.2f, 0.1f, 0.025f, 0.05f, 90); //edit later
+                    Game.CurrentScene.AddGameObject(sillything1);
+
                 }
+
+                else
+                {
+                    x+=5;
+                    yspeed=-0.45f;
+                    xspeed=0.3f;
+                    kickpingr=false;
+                    buttonstate=1;
+                    trw=false;
+                    bounding = true;
+                    sillything1 = new Sillything(new Vector2f(x-30, y-30), new Vector2f(-2.2f, 0.5f), 16, 1, 0.0f, 0.0f, 0.1f, 0.025f, 0.03f, 90); //edit later
+                    Game.CurrentScene.AddGameObject(sillything1);
+
+                }
+                
             }
             if (bounding)
             {
@@ -437,10 +444,12 @@ if (tfl)
                            //if moving left and pressing right, slide. if slowly or barely moving right, dashing. if normal speed, running.
                                           //may make animation play faster as running speeds up.
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.Space)&&kickcooldown<=0) //time for kicking
+            if (Keyboard.IsKeyPressed(Keyboard.Key.Space)&&kickcooldown<=0&&kicktokens>0) //time for kicking
             {
+                Console.WriteLine(kicktokens);
                 if (!kicking)
                 {
+                    
                     float directionalacc = 0;
                     switch(buttonstate)
                     {
@@ -458,6 +467,7 @@ if (tfl)
                     Game.CurrentScene.AddGameObject(sillything1);
                     _sprite.TextureRect=scrongle[11];
                     tfl=false;
+                    
                     y-=1;
                     yspeed=-0.25f;
                     kicking=true;
@@ -471,6 +481,7 @@ if (tfl)
                             break;
 
                     }
+                    kicktokens--;
 
 
                 }

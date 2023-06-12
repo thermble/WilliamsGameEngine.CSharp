@@ -18,7 +18,7 @@ namespace MyGame
             _sprite.Texture=Game.GetTexture("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/box.png");
             _sprite.Position=pos;
             _sprite.Scale=scale;
-            //32x32, create collision "lines" on edges, distance and height multiplied by scale. i yearn for satisfaction
+
             AssignTag("box");
             SetCollisionCheckEnabled(true);
         }
