@@ -41,6 +41,15 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
         private const int FireDelay = 170;
         private int _fireTimer = 0; //weird update method to tell certain animations to update faster or slower.
         private readonly Sprite _sprite = new Sprite(); //make every sprite for the character a short animation :)    48x61
+
+        private readonly Sound _step = new Sound(); //random pitching
+        private readonly Sound _jump = new Sound();
+        private readonly Sound _skid = new Sound(); //stops after ur done dashing
+        private readonly Sound _kick = new Sound();  //volume or pitch boost with velocity?
+        private readonly Sound _boing = new Sound(); 
+        private readonly Sound _land = new Sound(); 
+        
+        
         const float gravaccel = 0.02f; //affects gravity.
         const float grndacc = 0.03f; //any instance that has different accel properties between ground and air shall have an if for the bool.
         const float airacc = 0.015f;//acceleration in the air
@@ -60,6 +69,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
         int floorcheck = 0;
         float floorpos = 0f;
         float wallpos = 0f;
+        float celpos = 0f;
 
         float timer = 1.5f; //speed of animations. can make separate timers for faster or slower anims.
         int buttonstate = 0; //0 is left, 1 is right
@@ -90,6 +100,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
         //creates ship!!!
         public Ship(Vector2f pos):base(pos)
         {
+            AssignTag("player");
             var scrongle = new IntRect[] // List<IntRect>
             {
                 new IntRect(  0, 0, 48, 61), //jump1  1
@@ -112,7 +123,12 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
             _sprite.TextureRect=scrongle[4];
             _sprite.Position=pos;
             _sprite.Origin =  new Vector2f(24, 61);
-            
+            _step.SoundBuffer=Game.GetSoundBuffer("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/stomp.wav");
+            _step.Pitch=1;
+            _skid.SoundBuffer=Game.GetSoundBuffer("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/skid.wav");
+            _boing.SoundBuffer=Game.GetSoundBuffer("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/wallhit.wav");
+            _kick.SoundBuffer=Game.GetSoundBuffer("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/kick.wav");
+            _jump.SoundBuffer=Game.GetSoundBuffer("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/jump.wav");
         }
 
         //functs overriden from gameobject (???)
@@ -149,6 +165,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                 {
                     Console.WriteLine("ceeeeeeloooooooo touched!!");
                     tcl=true;
+                    celpos=ocpos.Y+(oob.Y*objscmh.Y)+1;
                 }
                 if (_sprite.Position.Y<=(ocpos.Y-(oob.Y*objscmh.Y))+16)//multiply the int by yspeed :)
                 {
@@ -162,6 +179,7 @@ namespace MyGame    //maybe ledge grabbing? if kickingstate=false grab ledge
                   //implement a check when you're too far below the floor to properly clip.
                 //How does the game know what side you touch?
             }
+
             /*if (otherGameObject.HasTag("wall"))
             {
                 
@@ -248,6 +266,11 @@ if (tfl)
                     _sprite.TextureRect=scrongle[14];
                 }
             }
+            if (tcl&&!tlw&&!trw)
+            {
+                yspeed=0;
+                y=celpos+61;
+            }
             if (trw)
             {
                 xspeed=0;
@@ -323,10 +346,14 @@ if (tfl)
            
             if (kickping) //add a kickping for walls on left!!!
             {
+                _boing.Volume=40;
+                _boing.Play();
+                _kick.Stop();
                 Sillything sillything = new Sillything(new Vector2f(x+30, y-30), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, -0.1f, -0.025f, 0.03f, 90); //edit later
                 if (Keyboard.IsKeyPressed(Keyboard.Key.W))
                 {
 
+                    
                     x-=5;
                     yspeed=-0.65f;
                     xspeed=-0.07f;
@@ -342,7 +369,7 @@ if (tfl)
                 {
                     x-=5;
                     yspeed=-0.45f;
-                    xspeed=-0.3f;
+                    xspeed=-0.5f;
                     kickping=false;
                     buttonstate=0;
                     tlw=false;
@@ -358,6 +385,9 @@ if (tfl)
 
             if (kickpingr)
             {
+                _boing.Volume=40;
+                _boing.Play();
+                _kick.Stop();
                 Sillything sillything1 = new Sillything(new Vector2f(x+30, y-30), new Vector2f(2.2f, 0.5f), 16, 1, 0.0f, 0.0f, -0.1f, -0.025f, 0.03f, 90); //edit later
                 if (Keyboard.IsKeyPressed(Keyboard.Key.W))
                 {
@@ -378,7 +408,7 @@ if (tfl)
                 {
                     x+=5;
                     yspeed=-0.45f;
-                    xspeed=0.3f;
+                    xspeed=0.5f;
                     kickpingr=false;
                     buttonstate=1;
                     trw=false;
@@ -412,6 +442,9 @@ if (tfl)
 
             if (Keyboard.IsKeyPressed(Keyboard.Key.W) && tfl==true&&!kicking) //{ if (yspeed>-maxspeed) { yspeed-=gravaccel; } else { yspeed=-maxspeed; } y+=yspeed*msElapsed; tfl=false; } else
             {
+                _jump.Volume=100;
+                _jump.Pitch=3;
+                _jump.Play();
 
                 Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-72.0f), y-16.6f), new Vector2f(3.0f, 1.0f), 15, 1, xspeed+0.1f, -0.32f, 0.0f, -0.015f, 0.02f, 200);
                 
@@ -427,7 +460,7 @@ if (tfl)
                 y+=yspeed*msElapsed;
                 driftcheck = msElapsed;
             }
-            if (Keyboard.IsKeyPressed(Keyboard.Key.A)&&!kicking&&!bounding) { if (tlw) { x-=0; } buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max=5; int random =min+ rng.Next(max-min);int minf = 0, maxf = 10;int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> {0.00f,0.01f,0.02f,0.03f,0.04f,0.05f,0.06f,0.07f,0.08f,0.09f,1.00f}; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, Math.Abs(-xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10; int random = min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, 0.25f, 0.22f, 0.0f, -0.01f,-0.02f,165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
+            if (Keyboard.IsKeyPressed(Keyboard.Key.A)&&!kicking&&!bounding) { if (tlw) { x-=0; } buttonstate=0; if (xspeed>-tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max=5; int random =min+ rng.Next(max-min);int minf = 0, maxf = 10;int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> {0.00f,0.01f,0.02f,0.03f,0.04f,0.05f,0.06f,0.07f,0.08f,0.09f,1.00f}; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, Math.Abs(-xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed-=grndacc; } else { xspeed-=airacc; } } else { xspeed=-tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10; int random = min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { _step.Volume=7; _step.Pitch=5; _step.Play(); Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-24.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, 0.25f, 0.22f, 0.0f, -0.01f,-0.02f,165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
             {
                 if (xspeed<restspeed&&tfl) { xspeed+=grndacc; }
                 x+=xspeed*msElapsed;
@@ -436,7 +469,7 @@ if (tfl)
           //if moving right and pressing left, sliding. if slowly or barely moving left, dashing. if normal speed, running.
             }
            
-            if (Keyboard.IsKeyPressed(Keyboard.Key.D)&&!tlw&&!kicking&&!bounding) { if (trw) {x+=0; } buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max = 5; int random = min+ rng.Next(max-min); int minf = 0, maxf = 10; int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> { 0.00f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 1.00f }; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-72.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, -Math.Abs(xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]];int min = 7, max = 10;int random =min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-96.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, -0.25f, 0.22f, 0.0f, 0.01f, -0.02f, 165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
+            if (Keyboard.IsKeyPressed(Keyboard.Key.D)&&!tlw&&!kicking&&!bounding) { if (trw) {x+=0; } buttonstate=1; if (xspeed<tmaxspeed) { if (tfl) { _sprite.TextureRect=scrongle[6]; int min = 2, max = 5; int random = min+ rng.Next(max-min); int minf = 0, maxf = 10; int randomf = minf+rng.Next(maxf-minf); List<float> ranfloat = new List<float> { 0.00f, 0.01f, 0.02f, 0.03f, 0.04f, 0.05f, 0.06f, 0.07f, 0.08f, 0.09f, 1.00f }; Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-72.0f), y-3.0f), new Vector2f(1.0f, 1.0f), random, buttonstate, -Math.Abs(xspeed), -ranfloat[randomf], 0.0f, 0.01f, 0.01f, 165); Game.CurrentScene.AddGameObject(sillything); xspeed+=grndacc; } else { xspeed+=airacc; } } else { xspeed=tmaxspeed; if (tfl) { _sprite.TextureRect=scrongle[RUNLOOP[ANMCOUNTER%4]]; int min = 7, max = 10;int random =min+ rng.Next(max-min); if (ANMCOUNTER%4==0&&!regret||ANMCOUNTER%4==2&&!regret) { _step.Volume=7; _step.Pitch=5; _step.Play(); Sillything sillything = new Sillything(new Vector2f((x+bounds.Width-96.0f), y-34.0f), new Vector2f(3.0f, 3.0f), random, buttonstate, -0.25f, 0.22f, 0.0f, 0.01f, -0.02f, 165); Game.CurrentScene.AddGameObject(sillything); regret=true; } else if (ANMCOUNTER%4==1||ANMCOUNTER%4==3) { regret=false; } } } x+=xspeed*msElapsed; } else
             {
                 if (xspeed>restspeed&&tfl){ xspeed-=grndacc; }  //if not touching floor, no deceleration for you :)
                 x+=xspeed*msElapsed;
@@ -446,10 +479,12 @@ if (tfl)
             }
             if (Keyboard.IsKeyPressed(Keyboard.Key.Space)&&kickcooldown<=0&&kicktokens>0) //time for kicking
             {
-                Console.WriteLine(kicktokens);
+                
                 if (!kicking)
                 {
-                    
+                    _kick.Volume=35;
+                    _kick.Pitch=1.5f;
+                    _kick.Play();
                     float directionalacc = 0;
                     switch(buttonstate)
                     {

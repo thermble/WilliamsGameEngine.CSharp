@@ -21,8 +21,8 @@ namespace MyGame
         }
         public override void Update(Time elapsed)
         {
-            GameScene scene = (GameScene)Game.CurrentScene;
-            _text.DisplayedString="Score: "+scene.GetScore();
+            GameScene scene = (GameScene)Game.CurrentScene; //replace todo with score lol
+            _text.DisplayedString="todo: "+"Flag, ";//scene.GetScore();
         }
     }
 }

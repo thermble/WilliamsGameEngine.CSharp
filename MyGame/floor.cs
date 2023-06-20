@@ -57,6 +57,7 @@ namespace MyGame
 
         private readonly Sprite _sprite = new Sprite();
         Vector2f scaleshare = new Vector2f(0.0f, 0.0f);
+        Vector2f positionpass = new Vector2f(0.0f, 0.0f); //for debugging
         private IntRect[] sprts = new IntRect[]  //AAAAAAAAAAAAH
             {
                 new IntRect(  0, 0, 32, 32), //diamond     0
@@ -70,15 +71,20 @@ namespace MyGame
                 new IntRect(32, 64, 32, 32),//groundfast   7
 
                 new IntRect(64, 64, 32, 32),//groundfast2   8
+                new IntRect(0,96,32,32), //white
+                new IntRect(32,96,32,32), //black
+                new IntRect(64,96,32,32), //gray
+               
             };
         public Floor(Vector2f pos, Vector2f scale, int sch)
         {
             
-            _sprite.Texture= Game.GetTexture("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/floors.png");
+            _sprite.Texture= Game.GetTexture("C:/Users/gouldre/source/repos/WilliamsGameEngine.CSharp/MyGame/Resources/Floor.png");
             _sprite.TextureRect=sprts[sch];
             _sprite.Position = pos;
             _sprite.Scale=scale;
              scaleshare = scale;
+            positionpass=pos;
             _sprite.Origin=new Vector2f(16, 16);
             
             AssignTag("floor");
@@ -111,8 +117,7 @@ namespace MyGame
         public override void Update(Time elapsed)
         {
             int msElapsed = elapsed.AsMilliseconds();
-            Vector2f pos = _sprite.Position;
-            pos = _sprite.Position;
+            _sprite.Position=positionpass;
         }
     }
 }

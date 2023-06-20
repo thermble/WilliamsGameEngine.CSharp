@@ -15,7 +15,7 @@ namespace MyGame
             Game.Initialize(WindowWidth, WindowHeight, WindowTitle);
 
             // Create our scene.
-            GameScene scene = new GameScene();
+            GameScene scene = new GameScene(1);
             Game.SetScene(scene);
 
             // Run the game loop.

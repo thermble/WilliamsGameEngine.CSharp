@@ -26,7 +26,7 @@ namespace MyGame
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.Enter))
             {
-                GameScene scene = new GameScene();
+                GameScene scene = new GameScene(1);
                 Game.SetScene(scene);
             }
         }

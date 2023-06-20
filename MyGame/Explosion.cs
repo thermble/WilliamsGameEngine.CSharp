@@ -17,6 +17,8 @@ namespace MyGame
             PlayAnimation("explosion", AnimationMode.OnceForwards);
             _boom.SoundBuffer=Game.GetSoundBuffer("Resources/boom.wav");
             _boom.Play();
+            
+            //pitch shifting random
         }
         public override void Update(Time elapsed)
         {
